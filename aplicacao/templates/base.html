@@ -7,14 +7,39 @@
         {% block title %}
         {% endblock %}
     </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
 </head>
 <body>
+
+    {% if form %}
+
+    <ul>
+        {% for field_errors in form.errors.values() %}
+            {% for error in field_errors %}
+                <li id="error">{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+
+    <div class="container">
+        {% with mensagens = get_flashed_messages() %}
+        {% if mensagens %}
+    
+            {% for msg in mensagens %}
+            <div id="alerta">
+                Alerta! {{ msg }}
+            </div>
+            {% endfor%}
+    
+        {% endif %}
+        {% endwith %}
+    </div>
+
     {% block body %}
     {% endblock %}
 
-    <!-- <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script> -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

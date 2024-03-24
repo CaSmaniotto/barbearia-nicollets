@@ -31,7 +31,7 @@ def agendamento(servico_id):
             funcionario = Funcionario.query.filter_by(id=int(form.funcionarios_disponiveis.data)).first()
 
             session['funcionario'] = funcionario.nome
-            session['servico'] = servico.nome_servico
+            session['servico'] = servico.id
 
             horario_atual = datetime.combine(form.data.data, funcionario.horario_inicio)
             horario_saida = datetime.combine(form.data.data, funcionario.horario_saida)
@@ -74,31 +74,36 @@ def agendamento(servico_id):
 
             lista_horarios = [(item.strftime("%Y-%m-%d"), item.strftime("%H:%M:%S")) for item in lista_horarios]
 
-            return render_template("agendamento.html", form=form, form_confirmar_horario=form_confirmar_horario, lista_horarios=lista_horarios)
+            return render_template("agendamento.html", form=form, form_confirmar_horario=form_confirmar_horario, lista_horarios=lista_horarios, servico=servico)
 
         elif form_confirmar_horario.validate_on_submit():
 
             if 'horario' in request.form:
-                data_horario = datetime.strptime(request.form['horario'], '%Y-%m-%d %H:%M:%S')
+                data_horario = datetime.strptime(request.form['horario'], "%Y-%m-%d %H:%M:%S")
 
-                session['data'] = data_horario.strftime("%d %B, %Y")
-                session['horario'] = data_horario.strftime("%H:%M")
+                if data_horario > datetime.utcnow():
+                    session['data'] = data_horario.strftime("%d %B, %Y")
+                    session['horario'] = data_horario.strftime("%H:%M")
 
-                return redirect(url_for('finish'))
+                    return redirect(url_for('finish'))
+                else:
+                    flash("Horário inválido!")
+                    return redirect(url_for('agendamento', servico_id=servico_id))
             else:
                 return redirect(url_for('agendamento', servico_id=servico_id))
 
-    return render_template("agendamento.html", form=form)
+    return render_template("agendamento.html", form=form, servico=servico)
 
 @app.route('/finish', methods=['GET', 'POST'])
 def finish():
 
-    session.pop('csrf_token', None)
-
+    # session.pop('csrf_token', None)
     form = FormConfirmarAgendamento()
+
+    servico = Servico.query.filter_by(id=session['servico']).first()
 
     if request.method == 'POST':
         session.clear()
         return redirect("/")
 
-    return render_template("finish.html", form=form)
+    return render_template("finish.html", form=form, servico=servico)

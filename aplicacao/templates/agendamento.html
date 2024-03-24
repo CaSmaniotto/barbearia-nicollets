@@ -8,43 +8,74 @@ Agendamento
 
 {% block body %}
 
-<a href="/">Voltar</a>
+<nav>
+    <a href="/">Voltar</a>
+</nav>
+<div class="formularios">
+    <h1>Buscar horários</h1>
 
+    {% if form %}
+    <div>
+        <form method='POST'>
+            {{ form.csrf_token }}
+            {{ form.data.label }}
+            
+            {{form.data(class='datepicker')}} 
+            
+            <hr>
 
-{% if form %}
-
-<h1>Reservar horário</h1>
-
-<form method='POST'>
-    {{ form.csrf_token }}
-    {{ form.data.label }}
+            <div class="f-infos">
+                <div class="d-servico">
+                    {{servico.nome_servico}}
+                </div>
     
-    {{form.data(class='datepicker')}} <br><br><br>
+                <div class="d-preco-tempo">
+                    R$ {{servico.preco_servico}} <br>
+    
+                    {{servico.tempo}} min
+                </div>
+            </div>
 
-    {{ form.funcionarios_disponiveis.label }}
-    {{ form.funcionarios_disponiveis }}
+            <hr>
 
-    {{form.botao_enviar()}}
-</form>
+            {{ form.funcionarios_disponiveis.label }}
 
-{% endif %}
+            <div class="f-funcionarios">
+            {% for funcionario in form.funcionarios_disponiveis %}
+                <div>
+                    {{ funcionario() }}
+                    {{ funcionario.label }}
+                </div>
+            {% endfor %}
+            </div>
+        
+            {{form.botao_enviar()}}
+        </form>
+    </div>
+    {% endif %}
 
+    {% if form_confirmar_horario %}
+    <div>
+        <h1>Horários disponíveis</h1>
+    
+        <form method='POST'>
+            {{ form_confirmar_horario.csrf_token }}
+    
+            <div class="f-horario">
+            {% for horario in lista_horarios %}
+                <div>
+                    <input id="horario_{{ loop.index }}" type="radio" value="{{ horario[0] }} {{ horario[1] }}" name="horario"/>
+                    <label for="horario_{{ loop.index }}">{{ horario[1] }}</label>
+                </div>
+            {% endfor %}
+            </div>
+    
+            {{ form_confirmar_horario.botao_confirmar() }}
+        </form>
+    
+    </div>
+    {% endif %}
 
-{% if form_confirmar_horario %}
-
-<h1>Horários disponíveis</h1>
-
-<form method='POST'>
-    {{ form_confirmar_horario.csrf_token }}
-
-    {% for horario in lista_horarios %}
-    <input id="horario_{{ loop.index }}" type="radio" value="{{ horario[0] }} {{ horario[1] }}" name="horario"/>
-    <label for="horario_{{ loop.index }}">{{ horario[1] }}</label>
-    {% endfor %}
-
-    {{ form_confirmar_horario.botao_confirmar() }}
-</form>
-
-{% endif %}
+</div>
 
 {% endblock%}

@@ -8,15 +8,23 @@ Finish
 
 {% block body %}
 
-<a href="/">Voltar</a>
+<a href="/">Cancelar</a>
 
 
 {% if form %}
 
 <h1>Confirmar Agendamento</h1>
 
+<fieldset>
+    
 <label>Serviço: </label>
-{{session['servico']}} <br>
+{{servico.nome_servico}} <br>
+
+<Label>Preço: </Label>
+{{servico.preco_servico}} <br>
+
+<label>Tempo: </label>
+{{servico.tempo}} <br>
 
 <label>Funcionário: </label>
 {{session['funcionario']}} <br>
@@ -26,6 +34,8 @@ Finish
 
 <label>Horário: </label>
 {{session['horario']}} <br>
+
+</fieldset>
 
 
 <form method='POST'>
