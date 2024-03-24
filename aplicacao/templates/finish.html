@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Finish
+
+{% endblock%}
+
+{% block body %}
+
+<a href="/">Voltar</a>
+
+
+{% if form %}
+
+<h1>Confirmar Agendamento</h1>
+
+<label>Serviço: </label>
+{{session['servico']}} <br>
+
+<label>Funcionário: </label>
+{{session['funcionario']}} <br>
+
+<label>Data: </label>
+{{session['data']}} <br>
+
+<label>Horário: </label>
+{{session['horario']}} <br>
+
+
+<form method='POST'>
+    {{ form.csrf_token }}
+
+    {{form.botao_agendar()}}
+</form>
+
+{% endif %}
+
+{% endblock%}

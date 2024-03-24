@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    padding: 40px 50px;
+}
+
+.header {
+    gap: 30px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.h-info {
+    width: 100%;
+}
+
+.barra-pesquisa {
+    position: relative;
+    display: inline-block;
+    width: 100%; /* Ajuste a largura conforme necessário */
+}
+
+.icone {
+    position: absolute;
+    left: 10px; /* Ajuste a posição horizontal conforme necessário */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.campo-pesquisa {
+    padding: 15px;
+    padding-left: 35px; /* Ajuste conforme necessário para acomodar o ícone */
+    width: 100%;
+}
+
+
+.m-mostrar {
+    padding: 20px 50px;
+    gap: 10px;
+    display: flex;
+}
+
+.m-mostrar small, .m-mostrar h1, .m-mostrar svg {
+    margin: auto 0px;
+}
+
+.m-mostrar h1 {
+    height: 90%;
+}
+
+.m-mostrar svg {
+    cursor: pointer;
+}
+
+.rotate {
+    transform: rotate(-90deg);
+}
+
+.m-mostrar small {
+    color: #ffffff;
+    font-weight: 500;
+    padding: 2px 5px;
+    border-radius: 25px;
+    background-color: #2e59cf;
+    margin-left: 20px;
+}
+
+.itens {
+    visibility: show;
+    display: block;
+}
+
+.v {
+    visibility: hidden;
+    display: none;
+}
+
+.item {
+    padding: 20px 50px;
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    text-align: center;
+}
+
+.item p {
+    margin-bottom: 0;
+}
+
+.item span {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.item span a {
+    text-decoration: none;
+    color: snow;
+    border-radius: 15px;
+    margin: 0 auto;
+    padding: 5px 20px;
+    background-color: rgb(48, 120, 255);
+    border: 1px solid rgb(26, 87, 201);
+}
+
+.item span a:hover {
+    transition: .5s;
+    background-color: rgb(26, 87, 201);
+}
+
+.itens hr {
+    margin: 20px 50px 0px 50px;
+}

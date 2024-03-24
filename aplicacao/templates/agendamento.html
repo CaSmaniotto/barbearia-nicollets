@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Agendamento
+
+{% endblock%}
+
+{% block body %}
+
+<a href="/">Voltar</a>
+
+
+{% if form %}
+
+<h1>Reservar horário</h1>
+
+<form method='POST'>
+    {{ form.csrf_token }}
+    {{ form.data.label }}
+    
+    {{form.data(class='datepicker')}} <br><br><br>
+
+    {{ form.funcionarios_disponiveis.label }}
+    {{ form.funcionarios_disponiveis }}
+
+    {{form.botao_enviar()}}
+</form>
+
+{% endif %}
+
+
+{% if form_confirmar_horario %}
+
+<h1>Horários disponíveis</h1>
+
+<form method='POST'>
+    {{ form_confirmar_horario.csrf_token }}
+
+    {% for horario in lista_horarios %}
+    <input id="horario_{{ loop.index }}" type="radio" value="{{ horario[0] }} {{ horario[1] }}" name="horario"/>
+    <label for="horario_{{ loop.index }}">{{ horario[1] }}</label>
+    {% endfor %}
+
+    {{ form_confirmar_horario.botao_confirmar() }}
+</form>
+
+{% endif %}
+
+{% endblock%}
