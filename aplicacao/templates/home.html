@@ -49,6 +49,7 @@ Home
 
     <div class="itens v">
         {% for servico in servicos %}
+        <div class="d-item">
             <div class="item">
                 <p>{{servico.nome_servico}}</p>
                 <span>
@@ -57,8 +58,48 @@ Home
                 </span>
             </div>
             <hr>
+        </div>
         {% endfor %}
     </div>
 </div>
+
+
+<script>
+
+// barra de pesquisa
+
+//
+
+const btnMostrar = document.getElementsByClassName("m-mostrar")[0]; // Selecionando o primeiro elemento
+const listaItens = document.getElementsByClassName("itens")[0]; // Selecionando o primeiro elemento
+const btnSeta = document.getElementsByClassName("rotate")[0];
+
+btnMostrar.addEventListener('click', () => {
+    listaItens.classList.toggle('v');
+    btnSeta.classList.toggle('rotate');
+});
+
+//
+function filtrarServicos() {
+        var input, filtro, itens, texto;
+        input = document.querySelector('.campo-pesquisa');
+        filtro = input.value.toUpperCase();
+        itens = document.querySelectorAll('.d-item');
+
+        // Loop através de todos os itens e esconde aqueles que não correspondem à pesquisa
+        itens.forEach(function(item) {
+            texto = item.querySelector('p').innerText.toUpperCase();
+            if (texto.indexOf(filtro) > -1) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    // Adicione um ouvinte de evento ao campo de pesquisa para chamar a função de filtragem
+    document.querySelector('.campo-pesquisa').addEventListener('keyup', filtrarServicos);
+
+</script>
 
 {% endblock %}

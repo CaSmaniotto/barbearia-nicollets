@@ -8,9 +8,6 @@ Agendamento
 
 {% block body %}
 
-<nav>
-    <a href="/">Voltar</a>
-</nav>
 <div class="formularios">
     <h1>Buscar horários</h1>
 
@@ -26,13 +23,13 @@ Agendamento
 
             <div class="f-infos">
                 <div class="d-servico">
-                    {{servico.nome_servico}}
+                    <span>{{servico.nome_servico}}</span>
                 </div>
     
                 <div class="d-preco-tempo">
-                    R$ {{servico.preco_servico}} <br>
+                    <span>R$ {{servico.preco_servico}}</span> <br>
     
-                    {{servico.tempo}} min
+                    <span>{{servico.tempo}} min</span>
                 </div>
             </div>
 
@@ -55,9 +52,8 @@ Agendamento
     {% endif %}
 
     {% if form_confirmar_horario %}
+    <h1>Horários disponíveis</h1>
     <div>
-        <h1>Horários disponíveis</h1>
-    
         <form method='POST'>
             {{ form_confirmar_horario.csrf_token }}
     

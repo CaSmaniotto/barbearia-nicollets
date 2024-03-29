@@ -8,41 +8,58 @@ Finish
 
 {% block body %}
 
-<a href="/">Cancelar</a>
-
-
 {% if form %}
 
-<h1>Confirmar Agendamento</h1>
+<div class="formularios">
+    <h1>Confirmar Agendamento</h1>
+    <div>
+        <form method='POST' id="form-finish">
+            {{ form.csrf_token }}
 
-<fieldset>
-    
-<label>Serviço: </label>
-{{servico.nome_servico}} <br>
-
-<Label>Preço: </Label>
-{{servico.preco_servico}} <br>
-
-<label>Tempo: </label>
-{{servico.tempo}} <br>
-
-<label>Funcionário: </label>
-{{session['funcionario']}} <br>
-
-<label>Data: </label>
-{{session['data']}} <br>
-
-<label>Horário: </label>
-{{session['horario']}} <br>
-
-</fieldset>
-
-
-<form method='POST'>
-    {{ form.csrf_token }}
-
-    {{form.botao_agendar()}}
-</form>
+            <div class="f-finish">
+                <div>
+                    <span>
+                        <label>Serviço: </label>
+                        {{servico.nome_servico}}
+                    </span>
+                    <hr>
+                    <span>
+                        <Label>Preço: </Label>
+                        R$ {{servico.preco_servico}}
+                    </span>
+                    <hr>
+                    <span>
+                        <label>Duração: </label>
+                        {{servico.tempo.strftime('%M')}} min
+                    </span>
+                    <hr>
+                </div>
+                <div>
+                    <span>
+                        <label>Funcionário: </label>
+                        {{session['funcionario']}}
+                    </span>
+                    <hr>
+                    <span>
+                        <label>Data: </label>
+                        {{session['data']}}
+                    </span>
+                    <hr>
+                    <span>
+                        <label>Horário: </label>
+                        {{session['horario']}}
+                    </span>
+                    <hr>
+                </div>
+            </div>
+        
+            <div class="botoes">
+                {{form.botao_agendar()}}
+                <a href="/">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endif %}
 
