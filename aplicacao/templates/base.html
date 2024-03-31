@@ -7,6 +7,9 @@
         {% block title %}
         {% endblock %}
     </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
@@ -15,24 +18,55 @@
     <div class="container">
 
         <nav>
-            <a href="/" title="Voltar para o início">
-                <span class="material-symbols-outlined">
-                home
-                </span>
-            </a>
+            <div>
+                <button id="btnContraste" onclick="toggleDarkMode()" title="Ativar/Desativar Dark Mode">
+                    <span class="material-symbols-outlined">
+                        contrast
+                    </span>
+                </button>
+    
+    
+                <button id="btnSize" onclick="changeSize()" title="Aumentar/Diminuir Fonte">
+                    <span class="material-symbols-outlined">
+                        text_fields
+                    </span>
+                </button>
+            </div>
 
-            <button id="btnContraste" onclick="toggleDarkMode()" title="Ativar/Desativar Dark Mode">
-                <span class="material-symbols-outlined">
-                    contrast
-                </span>
-            </button>
 
-
-            <button id="btnSize" onclick="changeSize()" title="Aumentar/Diminuir Fonte">
-                <span class="material-symbols-outlined">
-                    text_fields
-                </span>
-            </button>
+            <div>
+                <a href="/" title="Voltar para o início">
+                    <span class="material-symbols-outlined">
+                    home
+                    </span>
+                </a>
+    
+                {% if current_user.permissao == 1 %}
+                <a href="/admin" title="Painel de Controle">
+                    <span class="material-symbols-outlined">
+                        admin_panel_settings
+                    </span>
+                </a>
+                {% endif %}
+    
+                {% if current_user.is_authenticated %}
+                <a href="/tasks" title="Minhas tarefas">
+                    <span class="material-symbols-outlined">
+                        checklist
+                    </span>
+                </a>
+                <a href="/dashboard" title="Dashboard">
+                    <span class="material-symbols-outlined">
+                        monitoring
+                    </span>
+                </a>
+                <a href="/logout" title="Sair">
+                    <span class="material-symbols-outlined">
+                        logout
+                    </span>
+                </a>
+                {% endif %}
+            </div>
         </nav>
 
         {% if form %}
@@ -81,18 +115,18 @@
             </div>
             <div>
                 <span class="material-symbols-outlined">
-                    location_on
-                </span>
-                <span>
-                    Avenida Paulo Delboux Guimarães, n° 815, 17380-000 Brotas-SP
-                </span>
-            </div>
-            <div>
-                <span class="material-symbols-outlined">
                     mail
                 </span>
                 <span>
                     email@teste.com
+                </span>
+            </div>
+            <div>
+                <span class="material-symbols-outlined">
+                    location_on
+                </span>
+                <span>
+                    Avenida Paulo Delboux Guimarães, n° 815, 17380-000 Brotas-SP
                 </span>
             </div>
         </div>

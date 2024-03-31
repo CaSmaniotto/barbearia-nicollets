@@ -1,0 +1,19 @@
+// desmarcar horario em ate 5 horas, senao cobrar valor adicional (multa) em proximo agendamento
+
+// uso para API:
+	- enviar relatório mensal
+	- email conta criada
+
+// funcionalidades a serem implementadas:
+	- API
+
+// criar uma tabela para avaliações (ou um campo na tabela usuario), para o usuario criar sua anotação e tickar positiva ou
+negativa, dps exibir % positiva % negativa
+
+// criar um hud para o usuario poder editar seu perfil, nome, etc, avaliacao, etc.
+
+// dashboard - ideias para gráficos
+	- total clientes mês
+	- faturalmente mensal
+	- servico mais solicitado
+	- avaliações % pos e % neg

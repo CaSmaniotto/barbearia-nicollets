@@ -17,6 +17,7 @@ Finish
             {{ form.csrf_token }}
 
             <div class="f-finish">
+                <h2>Informações do Serviço</h2>
                 <div>
                     <span>
                         <label>Serviço: </label>
@@ -24,25 +25,8 @@ Finish
                     </span>
                     <hr>
                     <span>
-                        <Label>Preço: </Label>
-                        R$ {{servico.preco_servico}}
-                    </span>
-                    <hr>
-                    <span>
                         <label>Duração: </label>
                         {{servico.tempo.strftime('%M')}} min
-                    </span>
-                    <hr>
-                </div>
-                <div>
-                    <span>
-                        <label>Funcionário: </label>
-                        {{session['funcionario']}}
-                    </span>
-                    <hr>
-                    <span>
-                        <label>Data: </label>
-                        {{session['data']}}
                     </span>
                     <hr>
                     <span>
@@ -51,10 +35,48 @@ Finish
                     </span>
                     <hr>
                 </div>
+                <div>
+                    <span>
+                        <Label>Preço: </Label>
+                        R$ {{servico.preco_servico}}
+                    </span>
+                    <hr>
+                    <span>
+                        <label>Data: </label>
+                        {{session['data']}}
+                    </span>
+                    <hr>
+                    <span>
+                        <label>Funcionário: </label>
+                        {{session['funcionario']}}
+                    </span>
+                    <hr>
+                </div>
+            </div>
+            <div class="f-finish">
+                <h2>Informações do Usuário</h2>
+                <div>
+                    <span>
+                        <label>Nome: </label>
+                        {{ session['nome'] }}
+                    </span>
+                    <hr>
+                    <span>
+                        <label>Email: </label>
+                        {{ session['email'] }}
+                    </span>
+                    <hr>
+                    <span>
+                        <label>Telefone de contato: </label>
+                        {{ session['telefone'] }}
+                    </span>
+                    <hr>
+                </div>
             </div>
         
             <div class="botoes">
                 {{form.botao_agendar()}}
+                <hr>
                 <a href="/">Cancelar</a>
             </div>
         </form>

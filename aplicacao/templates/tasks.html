@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Horárias Agendados
+
+{% endblock %}
+
+{% block body %}
+
+<div class="d-tabela">
+    <h2>Horários agendados para os próximos 7 dias</h2>
+
+    <div class="barra-pesquisa">
+        <span class="icone">
+            <svg stroke-linejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" height="24" width="24" class="icon" xmlns="http://www.w3.org/2000/svg">
+                <circle r="7" cy="10" cx="10"></circle>
+                <line y2="15" x2="15" y1="21" x1="21"></line>
+            </svg>
+        </span>
+        <input class="campo-pesquisa" type="search" placeholder="Filtrar campos...">
+    </div>
+    <table>
+        <tr>
+            <th>Funcionário</th>
+            <th>Cliente</th>
+            <th>Contato</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Status</th>
+        </tr>
+        {% for horario in horarios_agendados %}
+        <tr class="tr-item">
+            <td>{{ horario.funcionario.nome }}</td>
+            <td>{{ horario.usuario.nome }}</td>
+            <td>{{ horario.usuario.telefone }}</td>
+            <td>{{ horario.servico.nome_servico }}</td>
+            <td>{{ horario.data.strftime('%d/%m/%Y') }}</td>
+            <td>{{ horario.hora_inicio.strftime('%H:%M') }}</td>
+            <td>{{ horario.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+<script>
+
+    // barra de pesquisa
+    function filtrarServicos() {
+        var input, filtro, tabela, tr, td, i, txtValue;
+        input = document.querySelector('.campo-pesquisa');
+        filtro = input.value.toUpperCase();
+        tabela = document.querySelector("table");
+        tr = tabela.getElementsByTagName("tr");
+
+        // Loop através de todas as linhas da tabela, e cada célula dentro dela
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td");
+            for (var j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filtro) > -1) {
+                        tr[i].style.display = "";
+                        break; // Mostra a linha se encontrar uma correspondência em qualquer célula
+                    } else {
+                        tr[i].style.display = "none"; // Esconde a linha se não houver correspondência
+                    }
+                }
+            }
+        }
+    }
+
+    // Adicione um ouvinte de evento ao campo de pesquisa para chamar a função de filtragem
+    document.querySelector('.campo-pesquisa').addEventListener('keyup', filtrarServicos);
+
+</script>
+{% endblock %}
