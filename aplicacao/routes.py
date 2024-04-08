@@ -2,8 +2,11 @@ from flask import render_template, request, url_for, redirect, flash, session, a
 from aplicacao import app, database, bcrypt
 from aplicacao.models import Servico, Funcionario, Barbearia, Agenda, Usuario
 from datetime import datetime, timedelta
-from aplicacao.forms import FormBuscarHorarios, FormConfirmarHorario, FormConfirmarAgendamento, FormCriarConta, FormLogin
+from aplicacao.forms import FormBuscarHorarios, FormConfirmarHorario, FormConfirmarAgendamento, FormCriarConta, FormLogin, FormPerfil
 from flask_login import login_required, login_user, logout_user, current_user
+from aplicacao.utils import sendgrid_mail
+from sqlalchemy import func
+
 
 @app.errorhandler(403)
 def access_denied(e):
@@ -138,6 +141,17 @@ def finish():
         database.session.add(novo_horario)
         database.session.commit()
 
+        titulo = f"Horário agendado: {session['horario']}!"
+        mensagem = f"""
+        <p>{current_user.nome}<p>
+        <p>{servico.nome_servico}</p>
+        <p>{session['horario']}</p>
+        <p>{data}</p>
+        <p>{funcionario.nome}</p><br>
+        """
+
+        sendgrid_mail("smaniottocaetano@gmail.com", titulo, mensagem)
+
         flash("Seu horário foi agendado com sucesso!")
         return redirect("/")
 
@@ -194,6 +208,15 @@ def signup():
         
         database.session.add(usuario)
         database.session.commit()
+
+        titulo = "Conta criada com sucesso!"
+        mensagem = f"""
+        <p>Olá {form_criar_conta.nome.data}, sua conta foi criada com sucesso!<p>
+        <br> Caso não tenha sido você, entre em contato conosco respondendo a este email!
+        """
+
+        sendgrid_mail(form_criar_conta.email.data, titulo, mensagem)
+
         return redirect('/')
 
     return render_template('sign.html', form_criar_conta=form_criar_conta)
@@ -230,4 +253,30 @@ def dashboard():
     if current_user.permissao != 1:
         return abort(403)
     
-    return render_template('dashboard.html')
+    result = database.session.query(Agenda.status, func.count(Agenda.id)).group_by(Agenda.status).all()
+
+    cartoes = {'Pendente': 0, 'Concluído': 0, 'Cancelado': 0}
+
+    for status, count in result:
+        cartoes[status] = count
+        # print(f'Total de registros com status "{status}": {count}')
+    
+    return render_template('dashboard.html', cartoes=cartoes)
+
+@app.route('/perfil', methods=['GET', 'POST'])
+@login_required
+def perfil():
+    form = FormPerfil()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        current_user.nome = form.nome.data
+        current_user.telefone = form.telefone.data
+        database.session.commit()
+
+        flash("Dados alterados com sucesso!")
+        return redirect(url_for('home'))
+    else:
+        form.nome.data = current_user.nome
+        form.telefone.data = current_user.telefone
+        form.email.data = current_user.email
+        return render_template('perfil.html', form=form)

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+Meu Perfil
+
+{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+    
+    {% if form %}
+
+    {% for field_errors in form.errors.values() %}
+        {% for error in field_errors %}
+        <div class="alerta" id="alerta">
+            <span id="warning" class="material-symbols-outlined" style="font-size: 40px">
+                warning
+            </span>
+            {{ error }}
+        </div>
+        {% endfor %}
+    {% endfor %}
+
+    {% endif %}
+
+    {% with mensagens = get_flashed_messages() %}
+    {% if mensagens %}
+
+        {% for msg in mensagens %}
+        <div class="alerta" id="alerta">
+            <span class="material-symbols-outlined" style="font-size: 40px">
+                warning
+            </span>
+            {{ msg }}
+        </div>
+        {% endfor%}
+
+    {% endif %}
+    {% endwith %}
+</div>
+
+<div class="formularios">
+    {% if form %}
+
+    <h1>Meu Perfil</h1>
+    <form method="POST" id="login">
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+
+        {{ form.nome.label }}
+        {{ form.nome(placeholder="Digite seu nome...") }}
+
+        {{ form.telefone.label }}
+        {{ form.telefone(placeholder="Digite seu número de telefone...") }}
+
+        {{ form.email.label }}
+        {{ form.email(disabled=true) }}
+
+        {{ form.botao_confirmacao() }}
+
+        <hr>
+
+        <a href="/acessar">Voltar</a>
+    </form>
+
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -54,3 +54,9 @@ class FormConfirmarHorario(FlaskForm):
 
 class FormConfirmarAgendamento(FlaskForm):
     botao_agendar = SubmitField('Confirmar Agendamento')
+
+class FormPerfil(FlaskForm):
+    nome = StringField('Nome: ', validators=[DataRequired(), Length(max=75)])
+    telefone = StringField('Telefone: ',  validators=[DataRequired(), Regexp(r'^\(?[1-9]{2}\)? ?(?:9[2-9]\d{3} ?\d{4}|[2-5]|9[2-9][6-9] ?\d{4})$', message="Número de telefone inválido")])
+    email = StringField("Email: ")
+    botao_confirmacao = SubmitField('Salvar')

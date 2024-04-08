@@ -569,3 +569,70 @@ td:hover {
 .dark td:hover::after, .dark td:hover::before {
     background-color: #330fffcc;
 }
+
+/* dashboard.html */
+
+div.content {
+    padding: 30px;
+}
+
+#myChart {
+    width: 300px !important;
+    height: 150px !important;
+}
+
+div.cardlist {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+div.card {
+    padding: 10px;
+    border: 1px solid black;
+    max-width: 400px;
+    width: 30vw;
+}
+
+div.card h3 {
+    margin: 20px 0;
+}
+
+div.card p {
+    font-size: 12px;
+}
+
+div.card div.d-icone {
+    margin-top: 5px;
+    gap: 5px;
+    align-items: center;
+    font-size: 12px;
+    display: flex;
+}
+
+div.card div.status {
+    display: flex;
+    justify-content: space-between;
+}
+
+body > div.content > div.cardlist > div.card > div.status > span.material-symbols-outlined::before {
+    border-radius: 3px;
+    color: #fff;
+    font-size: 40px;
+    padding: 20px 24px;
+}
+
+span.material-symbols-outlined.Pendente::before {
+    content: "error";
+    background-color: rgb(255, 196, 0);
+}
+
+span.material-symbols-outlined.Concluído::before {
+    content: "check_circle";
+    background-color: rgb(74, 146, 52);
+}
+
+span.material-symbols-outlined.Cancelado::before {
+    content: "cancel";
+    background-color: rgb(209, 34, 34);
+}

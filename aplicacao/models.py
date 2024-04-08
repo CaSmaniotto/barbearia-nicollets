@@ -72,7 +72,7 @@ class Servico(database.Model):
     
 
 # modelos interface admin
-class ModelView(ModelView):
+class ControlAll(ModelView):
 
     def is_accessible(self):
         if current_user.permissao == 1:
@@ -83,11 +83,29 @@ class ModelView(ModelView):
     def not_auth(self):
         return "acess denied!"
 
+class ControlAgenda(ModelView):
+
+    def is_accessible(self):
+        if current_user.permissao == 1:
+            return current_user.is_authenticated
+        else:
+            return abort(403)
+        
+    def not_auth(self):
+        return "acess denied!"
+
+    form_choices = {
+        'status': [ (1,"Pendente"), 
+                    (2, "Concluído"),
+                    (3, "Pendente")]
+    }
+    
+
 #interface admin views
-admin.add_view(ModelView(Barbearia, database.session, name='Barbearia'))
-admin.add_view(ModelView(Funcionario, database.session, name='Funcionarios'))
-admin.add_view(ModelView(Usuario, database.session, name='Usuarios'))
-admin.add_view(ModelView(Servico, database.session, name='Servicos'))
-admin.add_view(ModelView(Agenda, database.session, name='Agenda'))
+admin.add_view(ControlAll(Barbearia, database.session, name='Barbearia'))
+admin.add_view(ControlAll(Funcionario, database.session, name='Funcionarios'))
+admin.add_view(ControlAll(Usuario, database.session, name='Usuarios'))
+admin.add_view(ControlAll(Servico, database.session, name='Servicos'))
+admin.add_view(ControlAgenda(Agenda, database.session, name='Agenda'))
 admin.add_link(MenuLink(name='Voltar', url='/'))
 admin.add_link(MenuLink(name='Sair', url='/logout'))

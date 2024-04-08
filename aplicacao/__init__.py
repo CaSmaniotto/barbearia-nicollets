@@ -3,7 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from sendgrid import SendGridAPIClient
 
+# sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+sg = SendGridAPIClient("API_KEY")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///barbearia.db"

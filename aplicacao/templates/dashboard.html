@@ -8,9 +8,32 @@ Dashboard
 
 {% block body %}
 
+<div class="content">
+    <div class="cardlist">
+        {% for status, total in cartoes.items() %}
+        <div class="card {{status}}">
+            <div class="status">
+                <span>
+                    <p>{{ status }}</p>
+                    <h3>{{ total }}</h3>
+                </span>
+                <span class="material-symbols-outlined {{status}}"></span>
+            </div>
+            
+            <hr>
 
-<div>
-    <canvas id="myChart"></canvas>
+            <div class="d-icone">
+                <span class="material-symbols-outlined">
+                    calendar_month
+                </span>
+                Todo o tempo
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
