@@ -220,9 +220,6 @@ input[type='submit']:hover {
     left: 50%;
     transform: translate(-50%, -20%);
     color: rgb(59, 59, 59);
-    border: 1px solid red;
-    box-shadow: rgba(255, 86, 86, 0.2) 0px 7px 29px 0px;
-    background-color: rgb(253, 203, 203);
     display: flex;
     padding: 15px 30px;
     gap: 20px;
@@ -232,6 +229,18 @@ input[type='submit']:hover {
 
 .material-symbols-outlined #warning {
     color: red;
+}
+
+.error {
+    border: 1px solid red;
+    box-shadow: rgba(255, 86, 86, 0.2) 0px 7px 29px 0px;
+    background-color: rgb(253, 203, 203);
+}
+
+.success {
+    border: 1px solid darkgreen;
+    box-shadow: rgba(84, 255, 69, 0.2) 0px 7px 29px 0px;
+    background-color: rgb(163, 240, 147);
 }
 
 /* navbar */
@@ -573,23 +582,23 @@ td:hover {
 /* dashboard.html */
 
 div.content {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
     padding: 30px;
-}
-
-#myChart {
-    width: 300px !important;
-    height: 150px !important;
+    margin-bottom: 60px;
 }
 
 div.cardlist {
     display: flex;
     justify-content: center;
     gap: 30px;
+    flex-wrap: wrap;
 }
 
 div.card {
     padding: 10px;
-    border: 1px solid black;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     max-width: 400px;
     width: 30vw;
 }
@@ -620,6 +629,7 @@ body > div.content > div.cardlist > div.card > div.status > span.material-symbol
     color: #fff;
     font-size: 40px;
     padding: 20px 24px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
 span.material-symbols-outlined.Pendente::before {
@@ -636,3 +646,26 @@ span.material-symbols-outlined.Cancelado::before {
     content: "cancel";
     background-color: rgb(209, 34, 34);
 }
+
+/* gráfico de barras */
+
+div.charts {
+    justify-content: center;
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+div.canva {
+    padding: 30px;
+    justify-content: center;
+    display: flex;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+canvas {
+    width: auto !important;
+    height: 300px !important;
+}
+

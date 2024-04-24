@@ -42,13 +42,13 @@ Acessar
 
     {% endif %}
 
-    {% with mensagens = get_flashed_messages() %}
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
     {% if mensagens %}
 
-        {% for msg in mensagens %}
-        <div class="alerta" id="alerta">
+        {% for categoria, msg in mensagens %}
+        <div class="alerta {{ categoria }}" id="alerta">
             <span class="material-symbols-outlined" style="font-size: 40px">
-                warning
+                info
             </span>
             {{ msg }}
         </div>
@@ -100,13 +100,13 @@ Acessar
 
     {% endif %}
 
-    {% with mensagens = get_flashed_messages() %}
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
     {% if mensagens %}
 
-        {% for msg in mensagens %}
-        <div class="alerta" id="alerta">
+        {% for categoria, msg in mensagens %}
+        <div class="alerta {{ categoria }}" id="alerta">
             <span class="material-symbols-outlined" style="font-size: 40px">
-                warning
+                info
             </span>
             {{ msg }}
         </div>

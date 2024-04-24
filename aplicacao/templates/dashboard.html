@@ -14,7 +14,7 @@ Dashboard
         <div class="card {{status}}">
             <div class="status">
                 <span>
-                    <p>{{ status }}</p>
+                    <p>{{ status }}s</p>
                     <h3>{{ total }}</h3>
                 </span>
                 <span class="material-symbols-outlined {{status}}"></span>
@@ -31,35 +31,195 @@ Dashboard
         </div>
         {% endfor %}
     </div>
-    <div>
-        <canvas id="myChart"></canvas>
+    <div class="charts">
+        <div class="canva">
+            <canvas id="bchart"></canvas>
+        </div>
+        <div class="canva">
+            <canvas id="pchart"></canvas>
+        </div>
+        <div class="canva">
+            <canvas id="cchart"></canvas>
+        </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-const ctx = document.getElementById('myChart');
+var meses = {{ meses | tojson }};
+var somas = {{ somas | tojson }};
 
-new Chart(ctx, {
+var ctx = document.getElementById('bchart').getContext('2d');
+var bChart = new Chart(ctx, {
     type: 'bar',
     data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-    }]
+        labels: meses,
+        datasets: [{
+            data: somas,
+            backgroundColor: [
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#219ebc',
+                '#215fbc',
+                '#215fbc',
+            ], //rgba(54, 162, 235, 0.2)
+            borderWidth: 1,
+        }]
     },
     options: {
-    scales: {
-        y: {
-        beginAtZero: true
+        plugins: {
+            title: {
+                display: true,
+                text: 'Receita Mensal ao Longo do Ano (R$)',
+                color: '#333',
+                font: {
+                    size: 20
+                },
+            },
+            legend: {
+                display: false, // Esconde a legenda
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'gray' // Cor do texto do eixo y
+                },
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    maxRotation: 90,
+                    minRotation: 90,
+                    color: 'gray' // Cor do texto do eixo x
+                }
+            }
         }
     }
+});
+
+const pchart = document.getElementById('pchart');
+var total_por_funcionarios = {{ total_por_funcionarios | safe }};
+var nomes_funcionarios = {{ nomes_funcionarios | safe }};
+
+const doughnutLabel = {
+    id: 'doughnutLabel',
+    beforeDatasetsDraw(chart, args, pluginOptions) {
+        const { ctx, data } = chart;
+
+        ctx.save();
+        const meta = chart.getDatasetMeta(0);
+        const total = meta.total;
+
+        const x = meta.data[0].x;
+        const y = meta.data[0].y;
+
+        ctx.font = '18px Arial';
+        ctx.fillStyle = '#666';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.fillText('Total: ' + total, x, y);
+        ctx.restore();
+    }
+};
+
+var p_chart = new Chart(pchart, {
+    type: 'doughnut',
+    data: {
+        labels: nomes_funcionarios,
+        datasets: [{
+            label: 'Atendimentos Realizados',
+            data: total_por_funcionarios,
+            backgroundColor: [
+                'rgb(21,96,122)',
+                'rgb(206,205,205)',
+                'rgb(41, 180, 226)'
+            ]
+        }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Atendimentos Totais (Mês Atual)',
+                font: {
+                    size: 20
+                },
+                color: '#333'            
+            }
+        }
+    },
+    plugins: [doughnutLabel]
+});
+
+var meses_clientes = {{ meses_clientes | tojson }};
+var total_clientes = {{ total_clientes | tojson }};
+
+var cchart = document.getElementById('cchart').getContext('2d');
+var cChart = new Chart(cchart, {
+    type: 'line',
+    data: {
+        labels: meses_clientes,
+        datasets: [{
+            data: total_clientes,
+            borderWidth: 1,
+            borderColor: 'rgb(41, 180, 226)',
+
+        }]
+    },
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Total de Clientes por Mês',
+                color: '#333',
+                font: {
+                    size: 20
+                },
+            },
+            legend: {
+                display: false, // Esconde a legenda
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'gray' // Cor do texto do eixo y
+                },
+                
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    maxRotation: 90,
+                    minRotation: 90,
+                    color: 'gray' // Cor do texto do eixo x
+                }
+            }
+        }
     }
 });
+
 </script>
+
+
 
 
 {% endblock %}

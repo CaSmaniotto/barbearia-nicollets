@@ -4,8 +4,8 @@ from aplicacao.models import Servico, Funcionario, Barbearia, Agenda, Usuario
 from datetime import datetime, timedelta
 from aplicacao.forms import FormBuscarHorarios, FormConfirmarHorario, FormConfirmarAgendamento, FormCriarConta, FormLogin, FormPerfil
 from flask_login import login_required, login_user, logout_user, current_user
-from aplicacao.utils import sendgrid_mail
-from sqlalchemy import func
+from aplicacao.utils import sendgrid_mail, calcular_somas_por_mes, total_clientes_mes
+from sqlalchemy import func, extract
 
 
 @app.errorhandler(403)
@@ -54,7 +54,7 @@ def agendamento(servico_id):
             tempo_servico = timedelta(minutes=total_minutos)
 
             # Realize o loop enquanto o horário atual for menor que o horário de saída
-            while ((horario_atual + tempo_servico) < horario_saida):
+            while ((horario_atual + tempo_servico) <= horario_saida):
 
                 if ((horario_atual + tempo_servico) <= almoco_entrada):
                     lista_horarios.append(horario_atual)
@@ -66,7 +66,6 @@ def agendamento(servico_id):
                     horario_atual = almoco_saida
                     lista_horarios.append(horario_atual)
                     horario_atual += tempo_servico
-
 
             for i in agenda:
                 agenda_inicio = datetime.combine(i.data, i.hora_inicio)
@@ -81,10 +80,13 @@ def agendamento(servico_id):
                         continue
                     else:
                         horarios_validos.append(horario)
-                
+
                 lista_horarios = horarios_validos
 
-            lista_horarios = [(item.strftime("%Y-%m-%d"), item.strftime("%H:%M:%S")) for item in lista_horarios]
+            horarios_validos = [horario for horario in lista_horarios if horario > datetime.now()]
+
+            lista_horarios = [(item.strftime("%Y-%m-%d"), item.strftime("%H:%M:%S")) for item in horarios_validos]
+
 
             return render_template("agendamento.html", form=form, form_confirmar_horario=form_confirmar_horario, lista_horarios=lista_horarios, servico=servico)
 
@@ -99,7 +101,7 @@ def agendamento(servico_id):
 
                     return redirect(url_for('finish'))
                 else:
-                    flash("Horário inválido!")
+                    flash("Horário inválido!", "error")
                     return redirect(url_for('agendamento', servico_id=servico_id))
             else:
                 return redirect(url_for('agendamento', servico_id=servico_id))
@@ -152,7 +154,7 @@ def finish():
 
         sendgrid_mail("smaniottocaetano@gmail.com", titulo, mensagem)
 
-        flash("Seu horário foi agendado com sucesso!")
+        flash("Seu horário foi agendado com sucesso!", "success")
         return redirect("/")
 
     return render_template("finish.html", form=form, servico=servico)
@@ -180,7 +182,7 @@ def signin():
         usuario = Usuario.query.filter_by(email=form.email.data).first()
         if usuario and bcrypt.check_password_hash(usuario.senha, form.senha.data):
             login_user(usuario)
-            flash("Logado com sucesso")
+            flash("Logado com sucesso", "success")
 
             session['email'] = usuario.email
             session['nome'] = usuario.nome
@@ -189,7 +191,7 @@ def signin():
 
             return redirect(url_for('home'))
         else:
-            flash("Senha incorreta")
+            flash("Senha incorreta", "error")
             return redirect("/acessar/signin")
     
     return render_template('sign.html', form=form)
@@ -217,6 +219,8 @@ def signup():
 
         sendgrid_mail(form_criar_conta.email.data, titulo, mensagem)
 
+        login_user(usuario)
+
         return redirect('/')
 
     return render_template('sign.html', form_criar_conta=form_criar_conta)
@@ -226,7 +230,7 @@ def signup():
 def logout():
     session.clear()
     logout_user()
-    flash("Saiu com sucesso!")
+    flash("Saiu com sucesso!", "success")
     return redirect(url_for('home'))
 
 
@@ -253,15 +257,41 @@ def dashboard():
     if current_user.permissao != 1:
         return abort(403)
     
+    ano_atual = datetime.now().year
+    mes_atual = datetime.now().month
+    
+    # cards
     result = database.session.query(Agenda.status, func.count(Agenda.id)).group_by(Agenda.status).all()
-
     cartoes = {'Pendente': 0, 'Concluído': 0, 'Cancelado': 0}
 
     for status, count in result:
         cartoes[status] = count
-        # print(f'Total de registros com status "{status}": {count}')
+
+    # grafico de pizza
+    total_por_funcionario = database.session.query(Funcionario.nome, func.count(Agenda.id)).\
+    join(Agenda).\
+    filter(Agenda.status == 'Concluído').\
+    filter(func.extract('year', Agenda.data) == ano_atual).\
+    filter(func.extract('month', Agenda.data) == mes_atual).\
+    group_by(Funcionario.nome).all()
+
+    funcionarios = {}
+    for nome, total in total_por_funcionario:
+        funcionarios[nome] = total
+
+    # grafico de barra - renda mensal
+    ano_atual = datetime.now().year
+    somas_por_mes = calcular_somas_por_mes(ano_atual)
+
+    total_anual = sum(somas_por_mes.values())
+    somas_por_mes['Média'] = total_anual / 12
+    somas_por_mes['Total'] = total_anual
     
-    return render_template('dashboard.html', cartoes=cartoes)
+    # grafico de pontos
+    total_clientes = total_clientes_mes(ano_atual)
+
+    return render_template('dashboard.html', cartoes=cartoes, meses=list(somas_por_mes.keys()), somas=list(somas_por_mes.values()), total_por_funcionarios=list(funcionarios.values()), nomes_funcionarios=list(funcionarios.keys()),
+                           meses_clientes=list(total_clientes.keys()), total_clientes=list(total_clientes.values()))
 
 @app.route('/perfil', methods=['GET', 'POST'])
 @login_required
@@ -273,7 +303,7 @@ def perfil():
         current_user.telefone = form.telefone.data
         database.session.commit()
 
-        flash("Dados alterados com sucesso!")
+        flash("Dados alterados com sucesso!", "success")
         return redirect(url_for('home'))
     else:
         form.nome.data = current_user.nome

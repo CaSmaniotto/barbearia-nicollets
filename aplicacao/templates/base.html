@@ -47,9 +47,6 @@
                         admin_panel_settings
                     </span>
                 </a>
-                {% endif %}
-    
-                {% if current_user.is_authenticated %}
                 <a href="/tasks" title="Minhas tarefas">
                     <span class="material-symbols-outlined">
                         checklist
@@ -59,7 +56,9 @@
                     <span class="material-symbols-outlined">
                         monitoring
                     </span>
+                {% endif %}
                 </a>
+                {% if current_user.is_authenticated %}
                 <a href="/perfil" title="Meu Perfil">
                     <span class="material-symbols-outlined">
                         account_circle
@@ -89,13 +88,13 @@
     
         {% endif %}
 
-        {% with mensagens = get_flashed_messages() %}
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
         {% if mensagens %}
     
-            {% for msg in mensagens %}
-            <div class="alerta" id="alerta">
+            {% for categoria, msg in mensagens %}
+            <div class="alerta {{ categoria }}" id="alerta">
                 <span class="material-symbols-outlined" style="font-size: 40px">
-                    warning
+                    info
                 </span>
                 {{ msg }}
             </div>

@@ -46,7 +46,7 @@ class FormBuscarHorarios(FlaskForm):
 
     def validate_data(self, data):
         if data.data < datetime.now().date():
-            flash('Data inválida!')
+            # flash('Data inválida!')
             raise ValidationError('Data inválida!')
 
 class FormConfirmarHorario(FlaskForm):

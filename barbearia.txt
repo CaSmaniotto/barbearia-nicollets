@@ -13,7 +13,8 @@ negativa, dps exibir % positiva % negativa
 // criar um hud para o usuario poder editar seu perfil, nome, etc, avaliacao, etc.
 
 // dashboard - ideias para gráficos
-	- total clientes mês
-	- faturalmente mensal
+	- total clientes mês - feito
+	- faturalmente mensal - feito
 	- servico mais solicitado
+	- total de clientes ao longo do ano - feito
 	- avaliações % pos e % neg

@@ -43,6 +43,7 @@ class Agenda(database.Model):
     hora_inicio = database.Column(database.Time, nullable=False)
     hora_termino = database.Column(database.Time, nullable=False)
     status = database.Column(database.String, nullable=False, default='Pendente')
+    observacao = database.Column(database.String(40))
 
     def __repr__(self):
         return (str(self.id))
@@ -75,9 +76,11 @@ class Servico(database.Model):
 class ControlAll(ModelView):
 
     def is_accessible(self):
-        if current_user.permissao == 1:
-            return current_user.is_authenticated
-        else:
+        if not current_user.is_authenticated:
+            return abort(403)
+        elif current_user.permissao == 1:
+            return True
+        else: 
             return abort(403)
         
     def not_auth(self):
@@ -86,18 +89,20 @@ class ControlAll(ModelView):
 class ControlAgenda(ModelView):
 
     def is_accessible(self):
-        if current_user.permissao == 1:
-            return current_user.is_authenticated
-        else:
+        if not current_user.is_authenticated:
+            return abort(403)
+        elif current_user.permissao == 1:
+            return True
+        else: 
             return abort(403)
         
     def not_auth(self):
         return "acess denied!"
 
     form_choices = {
-        'status': [ (1,"Pendente"), 
-                    (2, "Concluído"),
-                    (3, "Pendente")]
+        'status': [ ("Pendente","Pendente"), 
+                    ("Concluído", "Concluído"),
+                    ("Pendente", "Pendente")]
     }
     
 
