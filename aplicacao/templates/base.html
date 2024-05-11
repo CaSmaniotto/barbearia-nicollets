@@ -7,6 +7,7 @@
         {% block title %}
         {% endblock %}
     </title>
+    <link rel="icon" type="image/x-icon" href="../static/img/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -40,7 +41,12 @@
                     home
                     </span>
                 </a>
-    
+                {% if not current_user.is_authenticated %}
+                <a href="/acessar/signin" title="Login">
+                    <span class="material-symbols-outlined">
+                    login
+                    </span></a>
+                {% endif %}
                 {% if current_user.permissao == 1 %}
                 <a href="/admin" title="Painel de Controle">
                     <span class="material-symbols-outlined">
@@ -59,6 +65,11 @@
                 {% endif %}
                 </a>
                 {% if current_user.is_authenticated %}
+                <a href="/agenda" title="Meus agendamentos">
+                    <span class="material-symbols-outlined">
+                        edit_calendar
+                    </span>
+                </a>
                 <a href="/perfil" title="Meu Perfil">
                     <span class="material-symbols-outlined">
                         account_circle
@@ -114,7 +125,7 @@
                     call
                 </span>
                 <span>
-                    (XX) XXXX-XXXX
+                    (14) 99627-8073
                 </span>
             </div>
             <div>

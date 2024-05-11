@@ -6,7 +6,7 @@ from aplicacao.forms import FormBuscarHorarios, FormConfirmarHorario, FormConfir
 from flask_login import login_required, login_user, logout_user, current_user
 from aplicacao.utils import sendgrid_mail, calcular_somas_por_mes, total_clientes_mes
 from sqlalchemy import func, extract
-
+import json
 
 @app.errorhandler(403)
 def access_denied(e):
@@ -218,8 +218,13 @@ def signup():
         """
 
         sendgrid_mail(form_criar_conta.email.data, titulo, mensagem)
-
+        flash('Conta criada com sucesso!')
         login_user(usuario)
+
+        session['usuario'] = usuario.id
+        session['email'] = usuario.email
+        session['nome'] = usuario.nome
+        session['telefone'] = usuario.telefone
 
         return redirect('/')
 
@@ -310,3 +315,33 @@ def perfil():
         form.telefone.data = current_user.telefone
         form.email.data = current_user.email
         return render_template('perfil.html', form=form)
+    
+@app.route('/agenda', methods=['GET', 'POST'])
+@login_required
+def agenda():
+    horarios_anteriores = []
+    horarios_ativos = []
+
+    historico = Agenda.query.filter_by(usuario_id=current_user.id).all()
+
+    for agendamento in historico:
+        if agendamento.status in ['Cancelado', 'Concluído']:
+            horarios_anteriores.append(agendamento)
+        elif agendamento.status == 'Pendente':
+            horarios_ativos.append(agendamento)
+
+    return render_template('agenda.html', horarios_anteriores=horarios_anteriores, horarios_ativos=horarios_ativos)
+
+@app.route('/agenda/<int:horario_id>', methods=['GET', 'POST'])
+@login_required
+def excluir_horario(horario_id):
+
+    historico = Agenda.query.filter_by(usuario_id=current_user.id).all()
+
+    for agendamento in historico:
+        if agendamento.id == int(horario_id):
+            database.session.delete(agendamento)
+            database.session.commit()
+            flash("Horário cancelado!", "success")
+
+    return redirect('/')

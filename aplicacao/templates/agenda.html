@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+Minha Agenda
+
+{% endblock%}
+
+{% block body %}
+
+<div class="menu">
+    <div class="m-mostrar">
+        <svg stroke-linejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" height="24" width="24" class="rotate icon icon-tabler icon-tabler-chevron-down" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        <h1>Meus Horários</h1>
+        <small>{{ horarios_ativos|length }} registros</small>
+    </div>
+
+    <div class="itens">
+        {% for registro in horarios_ativos %}
+        <div class="d-item">
+            <div class="item">
+                <p>{{registro.servico.nome_servico}}</p>
+                <span class="span-item">
+                    <p>
+                        <span>{{registro.data.strftime('%d/%m/%Y')}}</span>
+                        <span class="horario-marcado">às {{registro.hora_inicio.strftime('%H:%M')}}</span>
+                    </p>
+                    <p>
+                        <span>Deseja cancelar?</span>
+                        <a href="/agenda/{{registro.id}}" onclick="redirect(event)">Cancelar</a>
+                    </p>
+                </span>
+            </div>
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="menu">
+    <div class="m-mostrar">
+        <svg stroke-linejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" height="24" width="24" class="rotate icon icon-tabler icon-tabler-chevron-down" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        <h1>Horários Anteriores</h1>
+        <small>{{ horarios_anteriores|length }} registros</small>
+    </div>
+
+    <div class="itens v">
+        {% for registro in horarios_anteriores %}
+        <div class="d-item">
+            <div class="item">
+                <p>{{registro.servico.nome_servico}}</p>
+                <span class="span-item">
+                    <p><span>{{registro.data.strftime('%d/%m/%Y')}}</span> <span class="horario-marcado">às {{registro.hora_inicio.strftime('%H:%M')}}</span></p>
+                    <span id="{{registro.status}}">{{registro.status}}</span>
+                </span>
+            </div>
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<script>
+
+const btnMostrar = document.getElementsByClassName("m-mostrar")[1]; // Selecionando o primeiro elemento
+const listaItens = document.getElementsByClassName("itens")[1]; // Selecionando o primeiro elemento
+const btnSeta = document.getElementsByClassName("rotate")[1];
+
+btnMostrar.addEventListener('click', () => {
+    listaItens.classList.toggle('v');
+    btnSeta.classList.toggle('rotate');
+});
+
+function redirect() {
+    if (!confirm('Tem certeza que deseja desmarcar esse horário?')) {
+        event.preventDefault();
+    }
+}
+
+</script>
+
+{% endblock%}

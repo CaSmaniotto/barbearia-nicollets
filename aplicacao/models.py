@@ -102,7 +102,7 @@ class ControlAgenda(ModelView):
     form_choices = {
         'status': [ ("Pendente","Pendente"), 
                     ("Concluído", "Concluído"),
-                    ("Pendente", "Pendente")]
+                    ("Cancelado", "Cancelado")]
     }
     
 
