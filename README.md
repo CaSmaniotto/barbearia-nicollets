@@ -15,9 +15,10 @@
 
 ## Técnologias Utilizadas
 
-- Linguagem de Programação: Python, Javascript; <br/>
+- Linguagens de Programação: Python, Javascript; <br/>
 - Framework: Flask; <br/>
 - Banco de Dados: SQLalchemy - SQlite3; <br/>
+- API: SendGrid
 
 ## Screenshots
 
