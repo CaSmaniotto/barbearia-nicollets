@@ -25,41 +25,65 @@ Home
             {% endfor %}
             </div>
         </div>
-    </div>
-    
-    <div class="barra-pesquisa">
-        <span class="icone">
-            <svg stroke-linejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" height="24" width="24" class="icon" xmlns="http://www.w3.org/2000/svg">
-                <circle r="7" cy="10" cx="10"></circle>
-                <line y2="15" x2="15" y1="21" x1="21"></line>
-            </svg>
-        </span>
-        <input class="campo-pesquisa" type="search" placeholder="Busca por serviço">
-    </div>    
+    </div>  
 </header>
 
-<div class="menu">
-    <div class="m-mostrar">
-        <svg stroke-linejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" height="24" width="24" class="rotate icon icon-tabler icon-tabler-chevron-down" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        <h1>Serviços</h1>
-        <small>{{ servicos|length }} serviços</small>
-    </div>
+<div class="menu" style="display: flex;">
+    <div>
+        <div class="slideshow-container">
 
-    <div class="itens v">
-        {% for servico in servicos %}
-        <div class="d-item">
-            <div class="item">
-                <p>{{servico.nome_servico}}</p>
-                <span>
-                    <p>R$ {{servico.preco_servico}}<br> {{servico.tempo.strftime('%M')}} min</p>
-                    <a href="/agendamento/{{servico.id}}">Reservar</a>
-                </span>
+            <div class="mySlides fade">
+                <img src="../static/img/slide1.jpeg" style="width:800px;">
+            </div>
+            <div class="mySlides fade">
+                <img src="../static/img/slide2.jpeg" style="width:800px">
+            </div>
+            <div class="mySlides fade">
+                <img src="../static/img/slide3.jpeg" style="width:800px">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1552.2010954440514!2d-48.12263211678566!3d-22.286429096734906!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c7798fe7496a3b%3A0x90566c919edb6e9!2sBarbearia%20Nicolette!5e0!3m2!1spt-BR!2sbr!4v1715528905547!5m2!1spt-BR!2sbr" width="800px" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+    <div class="m-servicos">
+        <div class="barra-pesquisa">
+            <span class="icone">
+                <svg stroke-linejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" height="24" width="24" class="icon" xmlns="http://www.w3.org/2000/svg">
+                    <circle r="7" cy="10" cx="10"></circle>
+                    <line y2="15" x2="15" y1="21" x1="21"></line>
+                </svg>
+            </span>
+            <input class="campo-pesquisa" type="search" placeholder="Busca por serviço">
+        </div>  
+
+        <div class="m-mostrar">
+            <svg stroke-linejoin="round" stroke-linecap="round" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" height="24" width="24" class="rotate icon icon-tabler icon-tabler-chevron-down" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <h1>Serviços</h1>
+            <small>{{ servicos|length }} serviços</small>
+        </div>
+    
+        <div class="itens">
+            {% for servico in servicos %}
+            <div class="d-item">
+                <div class="item">
+                    <p>{{servico.nome_servico}}</p>
+                    <span>
+                        <p style="color: #161616;"><b>R$ {{servico.preco_servico}}</b><br> {{servico.tempo.strftime('%Hh%Mmin')}}</p>
+                        <a href="/agendamento/{{servico.id}}">Reservar</a>
+                    </span>
+                </div>
             </div>
             <hr>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 </div>
+
+<div class="contato">
+    </div>
 
 
 <script>
@@ -95,6 +119,35 @@ function filtrarServicos() {
 
     // Adicione um ouvinte de evento ao campo de pesquisa para chamar a função de filtragem
     document.querySelector('.campo-pesquisa').addEventListener('keyup', filtrarServicos);
+
+    let slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+    showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+    showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName("mySlides");
+    let dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";
+    dots[slideIndex-1].className += " active";
+} 
 
 </script>
 

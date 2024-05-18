@@ -12,6 +12,10 @@ a {
     text-decoration: none;
 }
 
+form {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
 li, ul {
     list-style-type: none;
 }
@@ -23,7 +27,7 @@ li, ul {
 }
 
 .menu {
-    margin-bottom: 100px;
+    margin: 0px 50px 50px;
 }
 
 .h-info {
@@ -34,9 +38,13 @@ li, ul {
 }
 
 .barra-pesquisa {
+    margin: 0px 0px 50px 50px;
     position: relative;
     display: inline-block;
-    width: 100%; /* Ajuste a largura conforme necessário */
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    width: 90%;
+    /* border: 1px solid #dbdbdb; */
+    border-radius: 10px;
 }
 
 .icone {
@@ -44,17 +52,20 @@ li, ul {
     left: 10px; /* Ajuste a posição horizontal conforme necessário */
     top: 50%;
     transform: translateY(-50%);
+    color: #666;
 }
 
 .campo-pesquisa {
     padding: 15px;
     padding-left: 35px; /* Ajuste conforme necessário para acomodar o ícone */
+    border: none;
+    border-radius: 10px;
     width: 100%;
 }
 
 
 .m-mostrar {
-    padding: 20px 50px;
+    padding: 0px 50px 20px 50px;
     gap: 10px;
     display: flex;
 }
@@ -72,6 +83,10 @@ li, ul {
 }
 
 .rotate {
+    transform: rotate(0deg) !important;
+}
+
+.icon-tabler {
     transform: rotate(-90deg);
 }
 
@@ -87,7 +102,8 @@ li, ul {
 .itens {
     visibility: show;
     display: block;
-    margin: 0 50px;
+    margin: 0px 50px;
+    border-radius: 10px;
 }
 
 .v {
@@ -96,7 +112,7 @@ li, ul {
 }
 
 .item {
-    padding: 20px 50px;
+    padding: 20px 10px;
     gap: 10px;
     display: flex;
     justify-content: space-between;
@@ -114,13 +130,14 @@ li, ul {
 }
 
 .item span a {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     text-decoration: none;
     color: snow;
     border-radius: 10px;
     margin: 0 auto;
     padding: 5px 20px;
-    border: 2px solid #424992;
     background-color: #4c54ad;
+    font-size: 12px;
 }
 
 .item span a:hover {
@@ -129,7 +146,7 @@ li, ul {
 }
 
 .itens hr {
-    margin: 20px 50px 0px;
+    margin: 20px 0px 0px;
 }
 
 /* agendamento.html */
@@ -145,6 +162,10 @@ li, ul {
     margin-bottom: 100px;
 }
 
+.formularios a, .formularios button {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
 .formularios h1 {
     text-align: center;
 }
@@ -156,7 +177,7 @@ li, ul {
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
-    border: 2px solid black;
+    border: 1px solid #dbdbdb;
 }
 
 .formularios form .f-infos {
@@ -165,7 +186,6 @@ li, ul {
 }
 
 input[type='submit'] {
-    border: 2px solid #424992;
     background-color: #4c54ad;
     padding: 10px 15px;
     color: #fff;
@@ -321,13 +341,16 @@ nav button.active span {
     color: #fff;
 }
 
-.dark div.itens {
+.dark div.item {
     background-color: rgb(47, 47, 47);
+}
+
+.dark hr {
+    display: none;
 }
 
 .dark input[type="submit"] {
     background-color: #53238d !important;
-    border: 2px solid #160927 !important;
 }
 
 .dark input[type="submit"]:hover {
@@ -336,9 +359,12 @@ nav button.active span {
 }
 
 .dark input {
-    border: 2px solid rgb(26, 26, 26) !important;
     color: #fff !important;
     background-color: rgb(47,47,47);
+}
+
+.dark .item p {
+    color: #FFf !important;
 }
 
 .changeFont:not(h1):not(nav):not(footer):not(.material-symbols-outlined) {
@@ -407,6 +433,7 @@ nav button.active span {
 }
 
 .botoes a, form#login a, form#register a {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     text-align: center;
     color: #4c54ad;
     border: 2px solid #424992;
@@ -477,7 +504,8 @@ footer .footer-d {
     display: flex;
 }
 
-footer .footer-d div {
+footer .footer-d div, 
+footer .footer-d a {
     align-items: center;
     justify-content: center;
     gap: 5px;
@@ -488,6 +516,20 @@ footer .footer-d div:hover {
     transition: .5s;
     color: #4c54ad;
 }
+
+footer .footer-d a span {
+    color: black;
+    margin: auto 0;
+}
+
+.dark footer .footer-d a span{
+    color: #fff;
+} 
+
+.dark footer .footer-d svg {
+    fill: #fff;
+}
+
 
 /* login.html */
 
@@ -744,4 +786,100 @@ canvas {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+/* carrossel */
+
+/* Slideshow container */
+.slideshow-container {
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+}
+
+  /* Hide the images by default */
+.mySlides {
+    display: none;
+}
+
+  /* Next & previous buttons */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    background-color: #66666685;
+    user-select: none;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+.numbertext {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+}
+
+.mySlides.fade {
+    width: 800px;
+}
+
+.m-servicos {
+    width: 100%;
+}
+
+/* contato */
+
+iframe {
+    margin: 30px 0;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.menu img {
+    object-fit: cover;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+hr {
+    border-top: 1px solid #dbdbdb;
+}
+
+input {
+    border: 1px solid #dbdbdb !important;
 }

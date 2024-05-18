@@ -344,4 +344,4 @@ def excluir_horario(horario_id):
             database.session.commit()
             flash("Horário cancelado!", "success")
 
-    return redirect('/')
+    return redirect('/agenda')
