@@ -1,7 +1,5 @@
 # Barbearia
 
-## Lembrete
-
 ## Índice
 
 <!--ts-->
